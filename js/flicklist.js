@@ -92,17 +92,24 @@ function searchMovies(query, callback) {
 
 
   $.ajax({
-    url: api.root + "/search/movie",
+    url: api.root + "/search/keyword",
     data: {
       api_key: api.token,
       query: query
     },
     success: function(response) {
       console.log(response);
+      let keywordIDs = response.results.map(getID);
+      let keywordsString = keywordIDs.join("|");
+
+      discoverMovies(render, keywordsString);
     }
   });
 }
 
+const getID = function(movie){
+  return movie.id;
+}
 
 /**
  * re-renders the page with new content, based on the current state of the model
